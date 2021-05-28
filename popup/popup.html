@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="milligram.css">
+    <link rel="stylesheet" href="popup.css"/>
+  </head>
+
+<body>
+  <div class="container">
+
+    <div class="row marginBottom">
+      <div class="column column-90 verticalAlign">
+        <div class="phraseContainer">
+          <div id="original"></div>
+        </div>
+      </div>
+      <div class="column column-10 align">
+        <button class="button button-clear" id="next">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path fill="#2e2e2e" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="row marginBottom">
+      <div class="column column-90 verticalAlign">
+        <div class="phraseContainer">
+          <span id="translation"></span>
+        </div>
+      </div>
+      <div class="column column-10 align">
+        <button class="button button-clear" id="check">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path fill="#2e2e2e" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="column">
+        <textarea id="input"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

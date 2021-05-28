@@ -1,0 +1,71 @@
+html,
+body {
+  width: 400px;
+  font-family: Georgia, serif;
+  scrollbar-width: none;
+}
+
+.container {
+  padding: 5px;
+}
+
+.align {
+  text-align: center;
+}
+
+.marginBottom {
+  margin-bottom: 10px;
+}
+
+.verticalAlign {
+  display: flex;
+  align-items: center;
+}
+
+.phraseContainer {
+  width: 100%;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(248, 242, 235);
+  border-radius: .4rem;
+}
+
+#original, #translation {
+  padding: 0 10px;
+}
+
+#next, #check {
+  margin-bottom: 0;
+  line-height: 0;
+  padding: 3px;
+  border-radius: 50%;
+  transition: all 0.1s linear;
+  height: auto;
+}
+
+#next:hover, #check:hover {
+  background-color: #ebebeb;
+}
+
+#next:active, #check:active {
+  background-color: #d4d4d4;
+}
+
+#next svg, #check svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#input {
+  margin-bottom: 0;
+  resize: none;
+}
+
+.green {
+  color: #00e676;
+}
+
+.red {
+  color: red;
+}
