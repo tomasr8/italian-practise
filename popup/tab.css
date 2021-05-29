@@ -1,0 +1,44 @@
+.tab-selection {
+    display: flex;
+    /* border: 2px solid #9b4dca; */
+    border-bottom: 2px solid #9b4dca;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.button-tab {
+    font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    margin-bottom: 0;
+    border-radius: 0;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 2rem !important;
+    padding-right: 4rem !important;
+    color: #5e5e5e !important;
+}
+
+.button-selected {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+    background-color: #9b4dca !important;
+    color: white !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.opacity {
+    opacity: 0;
+}
+
+.tab-selection button svg {
+    transition: all 0.2s;
+    fill: white;
+}
+
+.button-text {
+    padding-left: 5px;
+}

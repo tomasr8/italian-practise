@@ -1,8 +1,13 @@
 html,
 body {
-  width: 400px;
   font-family: Georgia, serif;
   scrollbar-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  background-color: white;
 }
 
 .container {

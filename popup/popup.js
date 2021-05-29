@@ -94,13 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
         textarea.classList.remove("green")
     })
 
-    // textarea.addEventListener("click", () => {
-    //     if(textarea.value === "") {
-    //         textarea.classList.remove("red")
-    //         textarea.classList.remove("green")
-    //     }
-    // })
-
     next.addEventListener("click", () => {
         textarea.classList.remove("red")
         textarea.classList.remove("green")
