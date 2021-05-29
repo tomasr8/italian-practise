@@ -40,7 +40,7 @@ body {
   padding: 0 10px;
 }
 
-#next, #check {
+#next, #check, #search-it, #search-en {
   margin-bottom: 0;
   line-height: 0;
   padding: 3px;
@@ -49,15 +49,15 @@ body {
   height: auto;
 }
 
-#next:hover, #check:hover {
+#next:hover, #check:hover, #search-it:hover, #search-en:hover  {
   background-color: #ebebeb;
 }
 
-#next:active, #check:active {
+#next:active, #check:active, #search-it:active, #search-en:active  {
   background-color: #d4d4d4;
 }
 
-#next svg, #check svg {
+#next svg, #check svg, #search-it svg, #search-en svg  {
   display: inline-block;
   vertical-align: middle;
 }
@@ -73,4 +73,10 @@ body {
 
 .red {
   color: red;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

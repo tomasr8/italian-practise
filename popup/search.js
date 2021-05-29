@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const textInput = document.getElementById("search-text")
     const itBtn = document.getElementById("search-it")
     const enBtn = document.getElementById("search-en")
-    const resultDiv = document.querySelector("#search-content div:nth-child(2)")
+    const resultDiv = document.querySelector("#search-content > div > div:nth-child(2)")
 
     itBtn.addEventListener("click", () => {
         const text = textInput.value
