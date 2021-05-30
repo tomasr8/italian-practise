@@ -2,20 +2,25 @@ html,
 body {
   font-family: Georgia, serif;
   scrollbar-width: none;
+  width: 440px;
   margin: 0;
   padding: 0;
 }
 
 .content {
-  background-color: white;
+  padding: 0 10px 5px 10px;
 }
 
 .container {
-  padding: 5px;
+  padding: 0;
 }
 
 .align {
   text-align: center;
+}
+
+.alignRight {
+  text-align: right;
 }
 
 .marginBottom {
@@ -23,8 +28,8 @@ body {
 }
 
 .verticalAlign {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .phraseContainer {
@@ -40,7 +45,7 @@ body {
   padding: 0 10px;
 }
 
-#next, #check, #search-it, #search-en {
+#next, #check, #search-it, #search-en, #search-prev, #search-next {
   margin-bottom: 0;
   line-height: 0;
   padding: 3px;
@@ -49,18 +54,27 @@ body {
   height: auto;
 }
 
-#next:hover, #check:hover, #search-it:hover, #search-en:hover  {
+#next:hover, #check:hover, #search-it:hover, #search-en:hover, #search-prev:not([disabled]):hover, #search-next:not([disabled]):hover  {
   background-color: #ebebeb;
 }
 
-#next:active, #check:active, #search-it:active, #search-en:active  {
+#next:active, #check:active, #search-it:active, #search-en:active, #search-prev:not([disabled]):active, #search-next:not([disabled]):active  {
   background-color: #d4d4d4;
 }
 
-#next svg, #check svg, #search-it svg, #search-en svg  {
+#next svg, #check svg, #search-it svg, #search-en svg, #search-prev svg, #search-next svg  {
   display: inline-block;
   vertical-align: middle;
 }
+
+
+/* #search-it, #search-en {
+  filter: brightness(100%);
+}
+
+#search-it:hover, #search-en:hover {
+  filter: brightness(85%);
+} */
 
 #input {
   margin-bottom: 0;
@@ -76,7 +90,48 @@ body {
 }
 
 .flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.flex-search {
+  display: flex !important;
+  justify-content: right !important;
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+.bottomBorder {
+  border-bottom: 1px solid grey;
+}
+
+.row .column.column-offset-5 {
+  margin-left: 5%;
+}
+
+.row .column.column-95 {
+  flex: 0 0 95%;
+  max-width: 95%;
+}
+
+.search-phrase {
+  height: 0px;
+  transition: all 0.2s;
+}
+
+.search-phrase-show {
+  height: 30px;
+}
+
+input[type="text"] {
+  margin-bottom: 0 !important;
+}
+
+.searchPadding {
+  padding: 0 10px;
+}
+
+.searchPaddingRight {
+  padding: 0 10px 0 0;
 }

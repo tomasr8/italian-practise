@@ -1,7 +1,6 @@
 function getPhrase(msg) {
     return browser.runtime.sendMessage(msg).then(({ response }) => {
-        const pair = response.split("\t")
-        return pair
+        return response
     })
 }
 

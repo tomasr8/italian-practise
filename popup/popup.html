@@ -10,8 +10,7 @@
     </head>
 
     <body>
-        <!-- <div id="triangle"></div> -->
-        <div class="content">
+        <div>
             <div class="tab-selection">
                 <button class="button button-clear button-tab button-selected" id="translate">
                     <svg
@@ -64,7 +63,7 @@
                     <span class="button-text"> Search </span>
                 </button>
             </div>
-            <div>
+            <div class="content">
                 <div id="translate-content">Another content</div>
 
                 <div class="hidden" id="practise-content">
@@ -123,11 +122,11 @@
 
                 <div class="hidden" id="search-content">
                     <div class="container">
-                        <div class="row">
+                        <div class="row marginBottom">
                             <div class="column column-80">
                                 <input type="text" id="search-text" autocomplete="off" />
                             </div>
-                            <div class="column column-20 align flex">
+                            <div class="column column-20 flex-search">
                                 <button class="button button-clear" id="search-it">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -166,8 +165,8 @@
                                             c-27.351,0-53.592,4.697-78.034,13.227v447.234c24.442,8.53,50.683,13.22,78.034,13.22
                                             C273.361,473.682,299.677,436.746,315.802,383.523z"
                                         />
-                                    </svg>
-                                </button><!--
+                                    </svg></button
+                                ><!--
                                 --><button class="button button-clear" id="search-en">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -368,7 +367,39 @@
                                 </button>
                             </div>
                         </div>
+
                         <div></div>
+
+                        <div class="row hidden" id="search-navigation">
+                            <div class="column alignRight">
+                                <button class="button button-clear" id="search-prev">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="24px"
+                                        viewBox="0 0 24 24"
+                                        width="24px"
+                                        fill="#000000"
+                                    >
+                                        <path d="M0 0h24v24H0V0z" fill="none" />
+                                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="column">
+                                <button class="button button-clear" id="search-next">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="24px"
+                                        viewBox="0 0 24 24"
+                                        width="24px"
+                                        fill="#000000"
+                                    >
+                                        <path d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
