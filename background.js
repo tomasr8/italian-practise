@@ -1,68 +1,66 @@
-const history = []
-let index = -1
+function randInt(n) {
+    return Math.floor(Math.random() * n)
+}
 
 function loadPhrases() {
     const url = browser.extension.getURL("phrases.txt")
-    return fetch(url).then(res => res.text())
+    return fetch(url)
+        .then(res => res.text())
+        .then(text => text.split("\n").map(row => row.split("\t")))
 }
 
-function randomIndex(rand, length) {
-    return Math.floor(rand * length)
+class Practise {
+    constructor(phrases) {
+        this.phrases = phrases
+        this.index = 0
+        this.history = [phrases[randInt(this.phrases.length)]]
+    }
+
+    next() {
+        if (this.index < this.history.length - 1) {
+            return this.history[this.index]
+        }
+
+        this.history.push(this.phrases[randInt(this.phrases.length)])
+        this.index++
+        return this.history[this.index]
+    }
+
+    prev() {
+        return this.history[Math.max(this.index, 0)]
+    }
 }
-
-// function searchText(phrases, { text, language, startIndex }) {
-//     const matches = []
-
-//     text = text.toLowerCase()
-//     const phraseIndex = language === "it" ? 1 : 0
-
-//     for (let i = startIndex; i < phrases.length; i++) {
-//         const phrase = phrases[i][phraseIndex]
-
-//         if (phrase.toLowerCase().includes(text)) {
-//             matches.push(phrases[i])
-//             if (matches.length === 5) {
-//                 break
-//             }
-//         }
-//     }
-
-//     return matches
-// }
 
 class Search {
     constructor(phrases) {
         this.phrases = phrases
         this.text = null
         this.language = null
+        this.startIndex = 0
         this.pages = []
         this.pageIndex = 0
         this.maxPerPage = 5
-        this.startIndex = 0
+    }
+
+    hasMore() {
+        return this.startIndex < this.phrases.length
     }
 
     hasNext() {
-        return (this.pageIndex + 1 < this.pages.length) || this.startIndex < this.phrases.length
+        return this.pageIndex + 1 < this.pages.length
     }
 
     hasPrev() {
         return this.pageIndex - 1 >= 0
     }
 
-    search(text, language, startIndex) {
-        this.reset()
-        this.text = text.toLowerCase()
-        this.language = language
-        this.startIndex = startIndex
-
-        console.log("after reset")
+    search(text, language) {
+        this.reset(text, language)
 
         const matches = this._search()
 
-        console.log("after search")
-
         this.pages.push(matches)
-        const hasNext = this.hasNext()
+        const hasNext = this.hasMore()
 
         return {
             page: this.pages[this.pageIndex],
@@ -72,15 +70,17 @@ class Search {
     }
 
     next() {
-        if (this.pageIndex + 1 < this.pages.length) {
+        if (this.hasNext()) {
             this.pageIndex++
 
-            const hasNext = this.hasNext()
+            const hasNext = this.hasNext() || this.hasMore()
+            const language = this.language
 
             return {
                 page: this.pages[this.pageIndex],
                 hasPrev: true,
                 hasNext,
+                language,
             }
         }
 
@@ -88,12 +88,14 @@ class Search {
 
         this.pages.push(matches)
         this.pageIndex++
-        const hasNext = this.hasNext()
+        const hasNext = this.hasMore()
+        const language = this.language
 
         return {
             page: this.pages[this.pageIndex],
             hasPrev: true,
             hasNext,
+            language,
         }
     }
 
@@ -101,21 +103,24 @@ class Search {
         if (this.hasPrev()) {
             this.pageIndex--
             const hasPrev = this.hasPrev()
+            const language = this.language
 
             return {
                 page: this.pages[this.pageIndex],
                 hasPrev,
                 hasNext: true,
+                language,
             }
         }
 
-        const hasPrev = this.hasPrev()
         const hasNext = this.hasNext()
+        const language = this.language
 
         return {
             page: [],
-            hasPrev,
+            hasPrev: false,
             hasNext,
+            language,
         }
     }
 
@@ -141,48 +146,38 @@ class Search {
         return matches
     }
 
-    reset() {
-        this.text = null
-        this.language = null
+    reset(text, language) {
+        this.text = text.toLowerCase()
+        this.language = language
+        this.startIndex = 0
         this.pages = []
         this.pageIndex = 0
-        this.maxPerPage = 5
-        this.searchIndex = 0
     }
 }
 
 loadPhrases().then(phrases => {
-    phrases = phrases.split("\n").map(row => row.split("\t"))
-    history.push(randomIndex(Math.random(), phrases.length))
-    index = 0
-
+    const practise = new Practise(phrases)
     const search = new Search(phrases)
 
     browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        const { type, rand } = request
-
-        if (type === "prev") {
-            index = Math.max(index - 1, 0)
-            sendResponse({ response: phrases[history[index]] })
-        } else if (type === "next") {
-            if (rand) {
-                history.push(randomIndex(rand, phrases.length))
-                index++
-            }
-            sendResponse({ response: phrases[history[index]] })
-        } else if (type === "search") {
-            const { text, language, startIndex } = request
-            const response = search.search(text, language, startIndex)
-            console.log(response)
-            sendResponse({ response })
-        } else if (type === "next-page") {
-            const response = search.next()
-            console.log(response)
-            sendResponse({ response })
-        } else if (type === "prev-page") {
-            const response = search.prev()
-            console.log(response)
-            sendResponse({ response })
+        switch (request.type) {
+            case "practise-prev":
+                sendResponse({ response: practise.prev() })
+                break
+            case "practise-next":
+                sendResponse({ response: practise.next() })
+                break
+            case "search-initial":
+                sendResponse({ response: search.search(request.text, request.language) })
+                break
+            case "search-prev":
+                sendResponse({ response: search.prev() })
+                break
+            case "search-next":
+                sendResponse({ response: search.next() })
+                break
+            default:
+                throw new Error(`Unknown request type <${request.type}>`)
         }
     })
 })

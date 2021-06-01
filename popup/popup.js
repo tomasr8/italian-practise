@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
             textarea.classList.remove("red")
             textarea.classList.remove("green")
 
-            getPhrase({ type: "next", rand: Math.random() }).then(p => {
+            getPhrase({ type: "practise-next" }).then(p => {
                 pair = p
                 original.innerText = pair[1]
             })
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
             textarea.classList.remove("red")
             textarea.classList.remove("green")
 
-            getPhrase({ type: "prev" }).then(p => {
+            getPhrase({ type: "practise-prev" }).then(p => {
                 pair = p
                 original.innerText = pair[1]
             })
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
         textarea.classList.remove("red")
         textarea.classList.remove("green")
 
-        getPhrase({ type: "next", rand: Math.random() }).then(p => {
+        getPhrase({ type: "practise-next" }).then(p => {
             pair = p
             original.innerText = pair[1]
         })
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         onCheck()
     })
 
-    getPhrase({ type: "next" }).then(p => {
+    getPhrase({ type: "practise-next" }).then(p => {
         pair = p
         original.innerText = pair[1]
     })

@@ -1,62 +1,45 @@
+function applyOne(elems, index, className, add, remove) {
+    for (let i = 0; i < elems.length; i++) {
+        if (i === index) {
+            elems[i].classList[add](className)
+        } else {
+            elems[i].classList[remove](className)
+        }
+    }
+}
+
+function addOne(elems, index, className) {
+    applyOne(elems, index, className, "add", "remove")
+}
+
+function removeOne(elems, index, className) {
+    applyOne(elems, index, className, "remove", "add")
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    const translateBtn = document.getElementById("translate")
-    const practiseBtn = document.getElementById("practise")
-    const searchBtn = document.getElementById("search")
+    const buttons = [
+        document.getElementById("translate"),
+        document.getElementById("practise"),
+        document.getElementById("search")
+    ]
 
-    const translateContent = document.getElementById("translate-content")
-    const practiseContent = document.getElementById("practise-content")
-    const searchContent = document.getElementById("search-content")
+    const content = [
+        document.getElementById("translate-content"),
+        document.getElementById("practise-content"),
+        document.getElementById("search-content")
+    ]
 
-    const translateSVG = document.getElementById("translate-svg")
-    const practiseSVG = document.getElementById("practise-svg")
-    const searchSVG = document.getElementById("search-svg")
+    const SVGs = [
+        document.getElementById("translate-svg"),
+        document.getElementById("practise-svg"),
+        document.getElementById("search-svg")
+    ]
 
-
-    translateBtn.addEventListener("click", () => {
-        translateContent.classList.remove("hidden")
-        practiseContent.classList.add("hidden")
-        searchContent.classList.add("hidden")
-
-        translateBtn.classList.add("button-selected")
-        practiseBtn.classList.remove("button-selected")
-        searchBtn.classList.remove("button-selected")
-
-        translateSVG.classList.remove("opacity")
-        practiseSVG.classList.add("opacity")
-        searchSVG.classList.add("opacity")
-
-        // document.body.style.backgroundColor = "white"
-    })
-
-    practiseBtn.addEventListener("click", () => {
-        translateContent.classList.add("hidden")
-        practiseContent.classList.remove("hidden")
-        searchContent.classList.add("hidden")
-
-        translateBtn.classList.remove("button-selected")
-        practiseBtn.classList.add("button-selected")
-        searchBtn.classList.remove("button-selected")
-
-        translateSVG.classList.add("opacity")
-        practiseSVG.classList.remove("opacity")
-        searchSVG.classList.add("opacity")
-
-        // document.body.style.backgroundColor = "white"
-    })
-
-    searchBtn.addEventListener("click", () => {
-        translateContent.classList.add("hidden")
-        practiseContent.classList.add("hidden")
-        searchContent.classList.remove("hidden")
-
-        translateBtn.classList.remove("button-selected")
-        practiseBtn.classList.remove("button-selected")
-        searchBtn.classList.add("button-selected")
-
-        translateSVG.classList.add("opacity")
-        practiseSVG.classList.add("opacity")
-        searchSVG.classList.remove("opacity")
-
-        // document.body.style.backgroundColor = "#9b4dca"
+    buttons.forEach((button, i) => {
+        button.addEventListener("click", () => {
+            addOne(buttons, i, "button-selected")
+            removeOne(content, i, "hidden")
+            removeOne(SVGs, i, "opacity")
+        })
     })
 })
