@@ -6,18 +6,19 @@ function loadPhrases() {
     const url = browser.extension.getURL("phrases.txt")
     return fetch(url)
         .then(res => res.text())
-        .then(text => text.split("\n").map(row => row.split("\t")))
+        .then(text => text.split(/\r?\n/).map(row => row.split("\t")))
 }
 
 class Practise {
     constructor(phrases) {
         this.phrases = phrases
-        this.index = 0
-        this.history = [phrases[randInt(this.phrases.length)]]
+        this.index = -1
+        this.history = []
     }
 
     next() {
         if (this.index < this.history.length - 1) {
+            this.index++
             return this.history[this.index]
         }
 
@@ -27,7 +28,8 @@ class Practise {
     }
 
     prev() {
-        return this.history[Math.max(this.index, 0)]
+        this.index = Math.max(this.index - 1, 0)
+        return this.history[this.index]
     }
 }
 
@@ -66,6 +68,7 @@ class Search {
             page: this.pages[this.pageIndex],
             hasPrev: false,
             hasNext,
+            language
         }
     }
 
@@ -80,7 +83,7 @@ class Search {
                 page: this.pages[this.pageIndex],
                 hasPrev: true,
                 hasNext,
-                language,
+                language
             }
         }
 
@@ -95,7 +98,7 @@ class Search {
             page: this.pages[this.pageIndex],
             hasPrev: true,
             hasNext,
-            language,
+            language
         }
     }
 
@@ -109,7 +112,7 @@ class Search {
                 page: this.pages[this.pageIndex],
                 hasPrev,
                 hasNext: true,
-                language,
+                language
             }
         }
 
@@ -117,10 +120,10 @@ class Search {
         const language = this.language
 
         return {
-            page: [],
+            page: this.pages[0],
             hasPrev: false,
             hasNext,
-            language,
+            language
         }
     }
 

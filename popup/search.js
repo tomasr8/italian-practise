@@ -1,19 +1,22 @@
-function searchText(text, language = "it") {
-    return browser.runtime.sendMessage({ type: "search-initial", text, language }).then(({ response }) => {
+const IT = "it"
+const EN = "en"
+
+function sendMesage(msg) {
+    return browser.runtime.sendMessage(msg).then(({ response }) => {
         return response
     })
 }
 
-function nextPage() {
-    return browser.runtime.sendMessage({ type: "search-next" }).then(({ response }) => {
-        return response
-    })
+function searchText(text, language) {
+    return sendMesage({ type: "search-initial", text, language })
 }
 
 function prevPage() {
-    return browser.runtime.sendMessage({ type: "search-prev" }).then(({ response }) => {
-        return response
-    })
+    return sendMesage({ type: "search-prev" })
+}
+
+function nextPage() {
+    return sendMesage({ type: "search-next" })
 }
 
 function createPhraseElement(pair) {
@@ -35,105 +38,50 @@ function createPhraseElement(pair) {
     return parser.parseFromString(html, "text/html").body.childNodes[0]
 }
 
+function isVisible() {
+    return !document.getElementById("search-content").classList.contains("hidden")
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const textInput = document.getElementById("search-text")
     const itBtn = document.getElementById("search-it")
     const enBtn = document.getElementById("search-en")
-    const resultDiv = document.querySelector("#search-content > div > div:nth-child(2)")
+    const resultDiv = document.getElementById("search-result")
 
-    document.getElementById("search-prev").addEventListener("click", () => {
-        prevPage().then(({ page, hasPrev, hasNext, language }) => {
-            while (resultDiv.firstChild) {
-                resultDiv.firstChild.remove()
+    function onSearch({ page, hasPrev, hasNext, language }) {
+        while (resultDiv.firstChild) {
+            resultDiv.firstChild.remove()
+        }
+
+        for (let pair of page) {
+            if (language === IT) {
+                pair = [pair[1], pair[0]]
             }
+            const elem = createPhraseElement(pair)
+            resultDiv.appendChild(elem)
+        }
 
-            for (let pair of page) {
-                if(language === "it") {
-                    pair = [pair[1], pair[0]]
-                }
-                const elem = createPhraseElement(pair)
-                resultDiv.appendChild(elem)
-            }
+        if (page.length > 0) {
+            document.getElementById("search-navigation").classList.remove("hidden")
+        } else {
+            document.getElementById("search-navigation").classList.add("hidden")
+        }
 
-            if (page.length > 0) {
-                document.getElementById("search-navigation").classList.remove("hidden")
-            } else {
-                document.getElementById("search-navigation").classList.add("hidden")
-            }
+        document.getElementById("search-prev").disabled = !hasPrev
+        document.getElementById("search-next").disabled = !hasNext
+    }
 
-            document.getElementById("search-prev").disabled = !hasPrev
-            document.getElementById("search-next").disabled = !hasNext
-        })
-    })
+    document.getElementById("search-prev").addEventListener("click", () => prevPage().then(onSearch))
+    document.getElementById("search-next").addEventListener("click", () => nextPage().then(onSearch))
 
-    document.getElementById("search-next").addEventListener("click", () => {
-        nextPage().then(({ page, hasPrev, hasNext, language }) => {
-            while (resultDiv.firstChild) {
-                resultDiv.firstChild.remove()
-            }
+    itBtn.addEventListener("click", () => searchText(textInput.value, IT).then(onSearch))
+    enBtn.addEventListener("click", () => searchText(textInput.value, EN).then(onSearch))
 
-            for (let pair of page) {
-                if(language === "it") {
-                    pair = [pair[1], pair[0]]
-                }
-                const elem = createPhraseElement(pair)
-                resultDiv.appendChild(elem)
-            }
-
-            if (page.length > 0) {
-                document.getElementById("search-navigation").classList.remove("hidden")
-            } else {
-                document.getElementById("search-navigation").classList.add("hidden")
-            }
-
-            document.getElementById("search-prev").disabled = !hasPrev
-            document.getElementById("search-next").disabled = !hasNext
-        })
-    })
-
-    itBtn.addEventListener("click", () => {
-        const text = textInput.value
-        console.log("searchin text")
-        searchText(text, "it", 0).then(({ page, hasPrev, hasNext }) => {
-            while (resultDiv.firstChild) {
-                resultDiv.firstChild.remove()
-            }
-
-            for (const pair of page) {
-                const elem = createPhraseElement([pair[1], pair[0]])
-                resultDiv.appendChild(elem)
-            }
-
-            if (page.length > 0) {
-                document.getElementById("search-navigation").classList.remove("hidden")
-            } else {
-                document.getElementById("search-navigation").classList.add("hidden")
-            }
-
-            document.getElementById("search-prev").disabled = !hasPrev
-            document.getElementById("search-next").disabled = !hasNext
-        })
-    })
-
-    enBtn.addEventListener("click", () => {
-        const text = textInput.value
-        searchText(text, "en", 0).then(({ page, hasPrev, hasNext }) => {
-            while (resultDiv.firstChild) {
-                resultDiv.firstChild.remove()
-            }
-
-            for (const pair of page) {
-                resultDiv.appendChild(createPhraseElement(pair))
-            }
-
-            if (page.length > 0) {
-                document.getElementById("search-navigation").classList.remove("hidden")
-            } else {
-                document.getElementById("search-navigation").classList.add("hidden")
-            }
-
-            document.getElementById("search-prev").disabled = !hasPrev
-            document.getElementById("search-next").disabled = !hasNext
-        })
+    document.addEventListener("keydown", event => {
+        if (event.key === "ArrowLeft" && isVisible()) {
+            prevPage().then(onSearch)
+        } else if (event.key === "ArrowRight" && isVisible()) {
+            nextPage().then(onSearch)
+        }
     })
 })
