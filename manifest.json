@@ -15,5 +15,9 @@
             "16": "icons/italy-16.png",
             "32": "icons/italy-32.png"
         }
-    }
+    },
+
+    "permissions": [
+        "https://context.reverso.net/*"
+    ]
 }

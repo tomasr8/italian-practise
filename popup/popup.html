@@ -64,7 +64,22 @@
                 </button>
             </div>
             <div class="content">
-                <div id="translate-content">Another content</div>
+                <div id="translate-content">
+                    <div class="container">
+                        <div class="row marginBottom">
+                            <div class="column column-80">
+                                <input type="text" id="translate-text" autocomplete="off" />
+                            </div>
+                            <div class="column column-20 flex-search">
+                                <button class="button button-clear" id="translate-it">It</button><!--
+                                --><button class="button button-clear" id="translate-en">En</button>
+                            </div>
+
+                        </div>
+                        <div id="translate-results"></div>
+                    </div>
+
+                </div>
 
                 <div class="hidden" id="practise-content">
                     <div class="container">
@@ -406,6 +421,7 @@
         </div>
 
         <script type="module" src="tab.js"></script>
+        <script type="module" src="translate.js"></script>
         <script type="module" src="practise.js"></script>
         <script type="module" src="search.js"></script>
     </body>
