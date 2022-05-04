@@ -19,19 +19,16 @@ function removeOne(elems, index, className) {
 document.addEventListener("DOMContentLoaded", () => {
     const buttons = [
         document.getElementById("translate"),
-        document.getElementById("practise"),
         document.getElementById("search")
     ]
 
     const content = [
         document.getElementById("translate-content"),
-        document.getElementById("practise-content"),
         document.getElementById("search-content")
     ]
 
     const SVGs = [
         document.getElementById("translate-svg"),
-        document.getElementById("practise-svg"),
         document.getElementById("search-svg")
     ]
 

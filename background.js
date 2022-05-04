@@ -1,6 +1,4 @@
-function randInt(n) {
-    return Math.floor(Math.random() * n)
-}
+const PAGE_LIMIT = 5
 
 function loadPhrases() {
     const url = browser.extension.getURL("phrases.txt")
@@ -9,39 +7,13 @@ function loadPhrases() {
         .then(text => text.split(/\r?\n/).map(row => row.split("\t")))
 }
 
-class Practise {
-    constructor(phrases) {
-        this.phrases = phrases
-        this.index = -1
-        this.history = []
-    }
-
-    next() {
-        if (this.index < this.history.length - 1) {
-            this.index++
-            return this.history[this.index]
-        }
-
-        this.history.push(this.phrases[randInt(this.phrases.length)])
-        this.index++
-        return this.history[this.index]
-    }
-
-    prev() {
-        this.index = Math.max(this.index - 1, 0)
-        return this.history[this.index]
-    }
-}
-
 class Search {
-    constructor(phrases) {
-        this.phrases = phrases
-        this.text = null
-        this.language = null
-        this.startIndex = 0
+    constructor(fileCounts) {
+        this.fileCounts = fileCounts
+        this.currFileIndex = 0
+        this.currLineIndex = 0
         this.pages = []
         this.pageIndex = 0
-        this.maxPerPage = 5
     }
 
     hasMore() {
@@ -54,6 +26,15 @@ class Search {
 
     hasPrev() {
         return this.pageIndex - 1 >= 0
+    }
+
+    async loadLanguagePair(sourceLang, targetLang) {
+        const url = browser.extension.getURL(`data/${sourceLang}-${targetLang}-0.json`)
+        return fetch(url).then(res => res.json())
+    }
+
+    searchSingleFile(file) {
+        
     }
 
     search(text, language) {
@@ -77,13 +58,11 @@ class Search {
             this.pageIndex++
 
             const hasNext = this.hasNext() || this.hasMore()
-            const language = this.language
 
             return {
                 page: this.pages[this.pageIndex],
                 hasPrev: true,
                 hasNext,
-                language
             }
         }
 
@@ -92,13 +71,11 @@ class Search {
         this.pages.push(matches)
         this.pageIndex++
         const hasNext = this.hasMore()
-        const language = this.language
 
         return {
             page: this.pages[this.pageIndex],
             hasPrev: true,
             hasNext,
-            language
         }
     }
 
@@ -106,24 +83,20 @@ class Search {
         if (this.hasPrev()) {
             this.pageIndex--
             const hasPrev = this.hasPrev()
-            const language = this.language
 
             return {
                 page: this.pages[this.pageIndex],
                 hasPrev,
                 hasNext: true,
-                language
             }
         }
 
         const hasNext = this.hasNext()
-        const language = this.language
 
         return {
             page: this.pages[0],
             hasPrev: false,
             hasNext,
-            language
         }
     }
 
@@ -159,19 +132,12 @@ class Search {
 }
 
 loadPhrases().then(phrases => {
-    const practise = new Practise(phrases)
     const search = new Search(phrases)
 
     browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
         switch (request.type) {
-            case "practise-prev":
-                sendResponse({ response: practise.prev() })
-                break
-            case "practise-next":
-                sendResponse({ response: practise.next() })
-                break
             case "search-initial":
-                sendResponse({ response: search.search(request.text, request.language) })
+                sendResponse({ response: search.search(request.text, request.sourceLang, request.targetLang) })
                 break
             case "search-prev":
                 sendResponse({ response: search.prev() })

@@ -67,15 +67,6 @@ body {
   vertical-align: middle;
 }
 
-
-/* #search-it, #search-en {
-  filter: brightness(100%);
-}
-
-#search-it:hover, #search-en:hover {
-  filter: brightness(85%);
-} */
-
 #input {
   margin-bottom: 0;
   resize: none;
@@ -97,9 +88,17 @@ body {
 
 .flex-search {
   display: flex !important;
-  justify-content: right !important;
+  /* justify-content: right !important; */
   align-items: center !important;
   gap: 7px !important;
+}
+
+.flex-search button, .flex-search select {
+  margin-bottom: 0;
+}
+
+input::placeholder {
+  opacity: 0.4;
 }
 
 .bottomBorder {
