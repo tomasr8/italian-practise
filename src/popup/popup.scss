@@ -1,0 +1,166 @@
+html,
+body {
+  font-family: Georgia, serif;
+  scrollbar-width: none;
+  width: 440px;
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  padding: 0 10px 5px 10px;
+}
+
+.marginBottom {
+  margin-bottom: 10px;
+}
+
+#search-prev,
+#search-next {
+  margin-bottom: 0;
+  line-height: 0;
+  padding: 3px;
+  border-radius: 50%;
+  transition: all 0.1s linear;
+  height: auto;
+}
+
+#search-prev:not([disabled]):hover,
+#search-next:not([disabled]):hover {
+  background-color: #ebebeb;
+}
+
+#search-prev:not([disabled]):active,
+#search-next:not([disabled]):active {
+  background-color: #d4d4d4;
+}
+
+#search-prev svg,
+#search-next svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.green {
+  color: #00e676;
+}
+
+.red {
+  color: red;
+}
+
+.flex-search {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+
+  button,
+  select {
+    margin-bottom: 0;
+  }
+
+  select {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+}
+
+::placeholder {
+  opacity: 0.3;
+}
+
+.bottomBorder {
+  border-bottom: 1px solid grey;
+}
+
+input[type="text"] {
+  margin-bottom: 0;
+}
+
+#search-result,
+#translate-results {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#search-navigation {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  
+  button[disabled] {
+    opacity: 0.3;
+  }
+}
+
+#search-result {
+  .phrase {
+    .original {
+      padding: 3px 10px;
+      background-color: #f2e7f8;
+    }
+
+    .translated {
+      padding: 3px 10px 3px 20px;
+    }
+
+    strong {
+      font-style: italic;
+    }
+  }
+
+  .phrase:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+
+#translate-results {
+  .translation-item {
+    em {
+      font-size: 14px;
+    }
+
+    .translation-container {
+      margin-bottom: 5px;
+
+      .translation {
+        font-weight: bold;
+      }
+    }
+
+    .definition-container {
+      margin-bottom: 5px;
+      padding-left: 10px;
+
+      .definition {
+        margin-left: 5px;
+      }
+    }
+
+    .examples-container {
+      .original {
+        padding: 3px 10px;
+        background-color: #f2e7f8;
+      }
+  
+      .translated {
+        padding: 3px 10px 3px 20px;
+      }
+
+      strong {
+        font-style: italic;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+button {
+  font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}

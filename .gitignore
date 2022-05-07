@@ -1,1 +1,9 @@
 node_modules/
+
+.vscode
+
+preprocess/combined.json
+preprocess/combined.json.gz
+
+# webpack output directory
+dist/
