@@ -5,6 +5,9 @@ body {
   width: 440px;
   margin: 0;
   padding: 0;
+  -moz-user-select: text;
+  user-select: text;
+  cursor: auto;
 }
 
 .content {
