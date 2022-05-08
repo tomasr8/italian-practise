@@ -1,4 +1,6 @@
+import createNotfound from "./notfound"
 import { getState } from "./state"
+
 
 function sendMesage(msg) {
     return browser.runtime.sendMessage(msg).then(({ response }) => {
@@ -46,18 +48,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const searchBtn = document.getElementById("search-corpus")
     const resultDiv = document.getElementById("search-result")
 
-    function onSearch({ page, hasPrev, hasNext }) {
+    function onSearch({ page, hasPrev, hasNext }, initial=false) {
         console.log("PAGE", page, hasPrev, hasNext)
         resultDiv.replaceChildren()
 
-        if (Array.isArray(page)) {
+        const hasResults = page && page.length > 0
+        if (hasResults) {
             for (const pair of page) {
                 const elem = createPhraseElement(pair, textInput.value)
                 resultDiv.appendChild(elem)
             }
+        } else if(!initial) {
+            resultDiv.replaceChildren(createNotfound())
         }
 
-        const action = page && page.length > 0 ? "remove" : "add"
+        const action = hasResults ? "remove" : "add"
         document.getElementById("search-navigation").classList[action]("hidden")
         document.getElementById("search-prev").disabled = !hasPrev
         document.getElementById("search-next").disabled = !hasNext
@@ -70,8 +75,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
 
     searchBtn.addEventListener("click", () => {
-        console.log("CLICK", source.value, target.value, textInput.value)
-        searchCorpus(source.value, target.value, textInput.value).then(onSearch)
+        const q = textInput.value
+        if (q) {
+            searchCorpus(source.value, target.value, q).then(onSearch)
+        }
     })
 
     document.getElementById("search-prev").addEventListener("click", () => {
@@ -81,13 +88,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         nextPage().then(onSearch)
     })
 
+    const content = document.getElementById("search-content")
     document.addEventListener("keydown", event => {
-        if (event.key === "ArrowLeft" && !isDisabled("search-prev")) {
+        if (content.classList.contains("hidden")) {
+            return
+        }
+        if (event.key === "Enter") {
+            const q = textInput.value
+            if (q) {
+                searchCorpus(source.value, target.value, q).then(onSearch)
+            }
+        } else if (event.key === "ArrowLeft" && !isDisabled("search-prev")) {
             prevPage().then(onSearch)
         } else if (event.key === "ArrowRight" && !isDisabled("search-next")) {
             nextPage().then(onSearch)
-        } else if (event.key === "Enter") {
-            searchCorpus(source.value, target.value, textInput.value).then(onSearch)
         }
     })
 
@@ -95,5 +109,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     textInput.value = search.q
     source.value = search.sourceLang
     target.value = search.targetLang
-    onSearch(search.result)
+    onSearch(search.result, true)
 })

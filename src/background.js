@@ -104,7 +104,7 @@ async function main() {
                 provider = new SearchProvider(phrases, q)
                 provider.init(phrases, q)
                 const result = provider.search(q)
-                state.search = { ...state.search, sourceLang, targetLang, q, result }
+                state.search = { sourceLang, targetLang, q, result }
                 sendResponse({ response: result })
                 break
             }

@@ -36,6 +36,10 @@ module.exports = [
                         // Compiles Sass to CSS
                         "sass-loader"
                     ]
+                },
+                {
+                    test: /\.svg/,
+                    type: "asset/source"
                 }
             ]
         },

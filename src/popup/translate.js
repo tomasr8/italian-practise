@@ -1,3 +1,4 @@
+import createNotfound from "./notfound"
 import translate from "./glosbe"
 import { getState, setState } from "./state"
 
@@ -43,10 +44,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const translateBtn = document.getElementById("translate-btn")
     const resultDiv = document.getElementById("translate-results")
 
-    translateBtn.addEventListener("click", async () => {
-        console.log("CLICK")
-        const { summary, items } = await translate(textInput.value, source.value, target.value)
-        resultDiv.replaceChildren(createTranslations(items))
+    async function onTranslate() {
+        const q = textInput.value
+        if (!q) {
+            return
+        }
+
+        const { summary, items } = await translate(source.value, target.value, q)
+        if (!summary && items.length === 0) {
+            resultDiv.replaceChildren(createNotfound())
+        } else {
+            resultDiv.replaceChildren(createTranslations(items))
+        }
         setState({
             translation: {
                 q: textInput.value,
@@ -55,20 +64,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 result: { summary, items }
             }
         })
-    })
+    }
 
+    translateBtn.addEventListener("click", onTranslate)
+
+    const content = document.getElementById("translate-content")
     document.addEventListener("keydown", async event => {
+        if (content.classList.contains("hidden")) {
+            return
+        }
+
         if (event.key === "Enter") {
-            const { summary, items } = await translate(textInput.value, source.value, target.value)
-            resultDiv.replaceChildren(createTranslations(items))
-            setState({
-                translation: {
-                    q: textInput.value,
-                    sourceLang: source.value,
-                    targetLang: target.value,
-                    result: { summary, items }
-                }
-            })
+            onTranslate()
         }
     })
 

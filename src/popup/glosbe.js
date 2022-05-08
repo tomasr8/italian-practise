@@ -1,6 +1,10 @@
 function getSummary(elem) {
-    const phraseSummary = [...elem.querySelectorAll(".phrase__summary__field")].map(elem => elem.textContent.trim())
-    const definitions = [...elem.querySelectorAll("ul.list-disc li")].map(elem => elem.textContent.trim())
+    const phraseSummary = [...elem.querySelectorAll(".phrase__summary__field")]
+        .filter(elem => elem !== null)
+        .map(elem => elem.textContent.trim())
+    const definitions = [...elem.querySelectorAll("ul.list-disc li")]
+        .filter(elem => elem !== null)
+        .map(elem => elem.textContent.trim())
 
     return { phraseSummary, definitions }
 }
@@ -34,8 +38,8 @@ function getTranslation(elem) {
     return { translation, phraseSummary, definitions, examples }
 }
 
-async function fetchFromGlosbe(phrase, sourceLang, targetLang) {
-    return await fetch(`https://glosbe.com/${sourceLang}/${targetLang}/${phrase}`).then(res => res.text())
+async function fetchFromGlosbe(sourceLang, targetLang, q) {
+    return await fetch(`https://glosbe.com/${sourceLang}/${targetLang}/${q}`).then(res => res.text())
 }
 
 function parseResponse(html) {
@@ -43,12 +47,15 @@ function parseResponse(html) {
     const body = parser.parseFromString(html, "text/html").body
 
     const summaryElem = body.querySelector(".phrase__translation__summary")
+    if(!summaryElem) {
+        return { summary: null, items: [] }
+    }
     const summary = getSummary(summaryElem)
     console.log("SUMMARY", summary)
 
     const list = body.querySelector(".translations__list")
     if (list === null) {
-        return { summary }
+        return { summary, items: [] }
     }
 
     const items = [...list.querySelectorAll(".translation__item")]
@@ -58,7 +65,11 @@ function parseResponse(html) {
     return { summary, items }
 }
 
-export default async function translate(phrase, sourceLang, targetLang) {
-    const html = await fetchFromGlosbe(phrase, sourceLang, targetLang)
-    return parseResponse(html)
+export default async function translate(sourceLang, targetLang, q) {
+    try {
+        const html = await fetchFromGlosbe(sourceLang, targetLang, q)
+        return parseResponse(html)
+    } catch(err) {
+        return { summary: null, items: [] }
+    }
 }
