@@ -1,0 +1,31 @@
+.search-navigation {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+
+    button {
+        margin-bottom: 0;
+        line-height: 0;
+        padding: 3px;
+        border-radius: 50%;
+        transition: all 0.1s linear;
+        height: auto;
+
+        svg {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        &[disabled] {
+            opacity: 0.3;
+        }
+
+        &:not([disabled]):hover {
+            background-color: #ebebeb;
+        }
+
+        &:not([disabled]):active {
+            background-color: #d4d4d4;
+        }
+    }
+}

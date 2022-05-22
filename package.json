@@ -3,10 +3,15 @@
     "version": "1.0.0",
     "description": "",
     "devDependencies": {
+        "@babel/core": "^7.17.10",
+        "@babel/preset-react": "^7.16.7",
+        "@svgr/webpack": "^6.2.1",
+        "babel-loader": "^8.2.5",
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^10.2.4",
         "css-loader": "^6.7.1",
         "eslint": "^7.27.0",
+        "eslint-plugin-react": "^7.29.4",
         "html-webpack-plugin": "^5.5.0",
         "prettier": "^2.6.2",
         "sass": "^1.51.0",
@@ -30,6 +35,9 @@
     },
     "homepage": "https://github.com/tomasr8/italian-practise#readme",
     "dependencies": {
-        "pako": "^2.0.4"
+        "pako": "^2.0.4",
+        "prop-types": "^15.8.1",
+        "react": "^18.1.0",
+        "react-dom": "^18.1.0"
     }
 }

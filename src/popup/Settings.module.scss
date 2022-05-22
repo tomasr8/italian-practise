@@ -1,0 +1,48 @@
+select {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.table {
+    width: max-content;
+    // border-collapse: collapse;
+    max-width: 95%;
+    margin: 0 auto;
+    margin-top: 10px;
+    overflow: scroll;
+    max-height: 300px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+
+    td {
+        padding: 5px 8px;
+
+        button.button-delete {
+            line-height: 0;
+            height: auto;
+            padding: 6px;
+            border-radius: 50%;
+            transition: all 0.1s linear;
+            // color: var(--danger);
+            color: #ce3661;
+            margin-bottom: 0;
+
+            &:hover {
+                background-color: #ebebeb;
+                color: #ce3661;
+            }
+
+            &:active {
+                background-color: #d4d4d4;
+                color: #ce3661;
+            }
+        }
+    }
+
+    tr:last-child td {
+        border: 0;
+    }
+}

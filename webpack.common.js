@@ -35,11 +35,24 @@ module.exports = [
                         "css-loader",
                         // Compiles Sass to CSS
                         "sass-loader"
-                    ]
+                    ],
+                    // options: {
+                    //     localIdentName: "[path][name]__[local]"
+                    // }
                 },
                 {
-                    test: /\.svg/,
-                    type: "asset/source"
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"]
+                },
+                // {
+                //     test: /\.svg/,
+                //     type: "asset/source"
+                // },
+                {
+                    test: /\.(js)$/,
+                    exclude: /node_modules/,
+                    use: ["babel-loader"]
                 }
             ]
         },

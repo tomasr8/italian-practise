@@ -1,4 +1,4 @@
-import createNotfound from "./notfound"
+import createNotfound from "./NotFound"
 import translate from "./glosbe"
 import { getState, setState } from "./state"
 

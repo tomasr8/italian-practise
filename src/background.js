@@ -63,48 +63,42 @@ class SearchProvider {
     }
 }
 
-let state = {
-    currTab: 1,
-    search: {
-        sourceLang: "en",
-        targetLang: "it",
-        q: "",
-        result: {
-            page: null,
-            hasPrev: false,
-            hasNext: false
-        }
-    },
-    translation: {
-        sourceLang: "en",
-        targetLang: "it",
-        q: "",
-        result: {
-            summary: null,
-            items: []
-        }
-    }
+function normalize(pair) {
+    const [source, target] = pair.split("-")
+    return source < target ? pair : `${target}-${source}`
+}
+
+async function getLanguagePair(pair) {
+    pair = normalize(pair)
+    const key = `languagePairs.${pair}`
+    return browser.storage.local.get(`languagePairs.${pair}`).then(data => data[key])
 }
 
 async function main() {
-    const url = browser.extension.getURL(`combined.json.gz`)
-    const data = await fetch(url)
-        .then(res => res.arrayBuffer())
-        .then(data => {
-            const compressed = new Uint8Array(data)
-            return JSON.parse(pako.inflate(compressed, { to: "string" }))
-        })
-
+    let state = {
+        value: "",
+        data: null,
+        sourceLang: "eng",
+        targetLang: "ces",
+        hasPrev: false,
+        hasNext: false
+    }
+    const languageData = {}
     let provider
-    browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    browser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         switch (request.type) {
             case "search-init": {
                 const { sourceLang, targetLang, q } = request
-                const phrases = data[`${sourceLang}-${targetLang}`]
-                provider = new SearchProvider(phrases, q)
-                provider.init(phrases, q)
+                const pair = normalize(`${sourceLang}-${targetLang}`)
+
+                if (!languageData[pair]) {
+                    languageData[pair] = await getLanguagePair(pair)
+                }
+
+                provider = new SearchProvider(languageData[pair], q)
+                provider.init(languageData[pair], q)
                 const result = provider.search(q)
-                state.search = { sourceLang, targetLang, q, result }
+                state = { ...state, sourceLang, targetLang, q, result }
                 sendResponse({ response: result })
                 break
             }

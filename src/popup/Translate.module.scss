@@ -1,0 +1,131 @@
+button {
+    font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    background-color: var(--background-primary);
+}
+
+input[type="text"] {
+    margin-bottom: 0;
+    color: var(--text-primary);
+}
+
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
+.flex-search {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+
+    button,
+    select {
+        margin-bottom: 0;
+    }
+
+    select {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+        font-size: 20px;
+    }
+
+    button.swap-button {
+        line-height: 0;
+        height: auto;
+        padding: 6px;
+        border-radius: 50%;
+        transition: all 0.1s linear;
+        color: var(--text-primary);
+
+        &:hover {
+            background-color: #ebebeb;
+        }
+
+        &:active {
+            background-color: #d4d4d4;
+        }
+    }
+}
+
+::placeholder {
+    opacity: 0.3;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.loader {
+    border-radius: 50%;
+    width: 4em;
+    height: 4em;
+    font-size: 10px;
+    position: absolute;
+    border-top: 0.5em solid rgba(164, 164, 164, 0.2);
+    border-right: 0.6em solid rgba(164, 164, 164, 0.2);
+    border-bottom: 0.7em solid rgba(164, 164, 164, 0.2);
+    border-left: 0.5em solid #fff;
+    left: 40%;
+    transform: translateZ(0);
+    animation: load8 1.1s infinite linear;
+}
+
+@keyframes load8 {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.translate-results {
+    max-height: 400px;
+    overflow-y: auto;
+
+    .translation-item {
+        em {
+            font-size: 14px;
+            padding-left: 5px;
+        }
+
+        .translation-container {
+            margin-bottom: 5px;
+
+            .translation {
+                font-weight: bold;
+            }
+        }
+
+        .definition-container {
+            margin-bottom: 5px;
+            padding-left: 10px;
+
+            em {
+                padding-left: 0;
+            }
+
+            .definition {
+                margin-left: 5px;
+            }
+        }
+
+        .examples-container {
+            .original {
+                padding: 3px 10px;
+                // background-color: #f2e7f8;
+                background-color: var(--background-primary-light90);
+            }
+
+            .translated {
+                padding: 3px 10px 3px 20px;
+            }
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 15px;
+        }
+    }
+}

@@ -17,5 +17,5 @@
         }
     },
 
-    "permissions": ["https://glosbe.com/*"]
+    "permissions": ["storage", "unlimitedStorage", "https://glosbe.com/*", "https://raw.githubusercontent.com/tomasr8/*"]
 }

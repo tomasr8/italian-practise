@@ -1,0 +1,61 @@
+html,
+body {
+    font-family: Georgia, serif;
+    scrollbar-width: none;
+    width: 440px;
+    margin: 0;
+    padding: 0;
+    -moz-user-select: text;
+    user-select: text;
+    cursor: auto;
+}
+
+:root {
+    --background-primary: #9b4dca;
+    --background-primary-light: #{lighten(#9b4dca, 30%)};
+    --background-primary-light90: #{lighten(#9b4dca, 40%)};
+    --background-secondary: #fff;
+    --text-primary: #5e5e5e;
+    --text-secondary: #fff;
+    --accent: purple;
+    --danger: darkred;
+}
+[data-theme="green"] {
+    --background-primary: rgb(67, 160, 71);
+    --background-primary-light: #{lighten(rgb(67, 160, 71), 30%)};
+    --background-primary-light90: #{lighten(rgb(67, 160, 71), 50%)};
+    --background-secondary: #fff;
+    --text-primary: #5e5e5e;
+    --text-secondary: #fff;
+    --accent: darkred;
+    --danger: darkred;
+}
+[data-theme="dark"] {
+    --background-primary: #474747;
+    --background-primary-light: #{lighten(#333, 30%)};
+    --background-primary-light90: #{lighten(#333, 90%)};
+    --background-secondary: #333;
+    --text-primary: #c7c7c7;
+    --text-secondary: #c7c7c7;
+    --accent: darkred;
+    --danger: darkred;
+}
+
+button:global(.button) {
+    background-color: var(--background-primary);
+    border-color: var(--background-primary);
+}
+
+input[type="text"]:focus,
+select:focus {
+    border-color: var(--background-primary);
+}
+
+[data-theme="green"] select:focus {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 8" width="30"><path fill="%2343a047" d="M0,0l6,8l6-8"/></svg>');
+}
+
+.container {
+  padding: 10px 10px 5px 10px;
+  background-color: var(--background-secondary);
+}
