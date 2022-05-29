@@ -85,9 +85,19 @@ export default function Settings({ theme, dispatch }) {
             </div>
             <div style={{ display: "flex", gap: 20, padding: "0 10px", marginBottom: 20 }}>
                 <LanguageSelect languages={languages} value={original} onChange={value => setOriginal(value)} />
-                <LanguageSelect languages={languages} value={target} onChange={value => setTarget(value)} menuStyles={{left: -50}} />
-                <span>
-                    <button className="button" disabled={loading} onClick={onDownload} style={{ marginBottom: 0 }}>
+                <LanguageSelect
+                    languages={languages}
+                    value={target}
+                    onChange={value => setTarget(value)}
+                    menuStyles={{ left: -50 }}
+                />
+                <span style={{position: "relative"}}>
+                    <button
+                        className="button"
+                        disabled={loading}
+                        onClick={onDownload}
+                        style={{ marginBottom: 0 }}
+                    >
                         Add
                     </button>
                     {loading && <span className={styles.loader}></span>}

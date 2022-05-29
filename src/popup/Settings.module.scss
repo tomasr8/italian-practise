@@ -27,17 +27,18 @@ select {
             border-radius: 50%;
             transition: all 0.1s linear;
             // color: var(--danger);
-            color: #ce3661;
+            // color: #ce3661;
+            color: grey;
             margin-bottom: 0;
 
             &:hover {
                 background-color: #ebebeb;
-                color: #ce3661;
+                // color: #ce3661;
             }
 
             &:active {
                 background-color: #d4d4d4;
-                color: #ce3661;
+                // color: #ce3661;
             }
         }
     }

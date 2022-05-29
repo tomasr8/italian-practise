@@ -21,7 +21,7 @@ function getInitialUI() {
         : {
               tab: "translate",
               translate: { value: "", data: null, sourceLang: "eng", targetLang: "ita" },
-              search: { value: "", data: null, sourceLang: "eng", targetLang: "ita" }
+              search: { value: "", data: null, sourceLang: "eng", targetLang: "ita", hasPrev: false, hasNext: false }
           }
 }
 

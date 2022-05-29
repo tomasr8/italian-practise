@@ -1,12 +1,15 @@
-import PropTypes from "prop-types"
-import React, { useRef, useState } from "react"
+import PropTypes, { exact } from "prop-types"
+import React, { useEffect, useRef, useState } from "react"
 
 import styles from "./LanguageSelect.module.scss"
 
-function Select({ options, value, onChange, menuStyles, SelectedItem, MenuItem }) {
+function Select({ options, value, onChange, defaultOpen, menuStyles, SelectedItem, MenuItem }) {
+    console.log("open", defaultOpen)
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState("")
     const inputRef = useRef()
+    console.log("state open", open)
+    // console.log("SEL", options)
 
     const filterOptions = (options, q) => {
         return options.filter(({ label }) => label.toLowerCase().includes(q.toLowerCase()))
@@ -34,6 +37,12 @@ function Select({ options, value, onChange, menuStyles, SelectedItem, MenuItem }
         setSearch("")
         onChange(value)
     }
+
+    useEffect(() => {
+        if (defaultOpen) {
+            onOpen()
+        }
+    }, [defaultOpen])
 
     const matchingOptions = search === "" ? options : filterOptions(options, search)
 
@@ -74,17 +83,26 @@ function Select({ options, value, onChange, menuStyles, SelectedItem, MenuItem }
     )
 }
 
-Select.propTypes = {}
+Select.propTypes = {
+    defaultOpen: PropTypes.bool
+}
 
-export default function LanguageSelect({ languages, value, onChange, menuStyles }) {
+Select.defaultProps = {
+    defaultOpen: false
+}
+
+export default function LanguageSelect({ languages, value, onChange, defaultOpen, menuStyles }) {
     const options = Object.entries(languages.names).map(([code, name]) => ({
         value: code,
         label: name,
         icon: languages.icons[code]
     }))
 
+    // console.log(options)
+
     const SelectedItem = ({ options, value }) => {
-        const { icon } = options.find(option => option.value === value)
+        // console.log("ITEM", options, value)
+        const { icon } = options.find(option => option.value === value) || {}
         return <span style={{ fontSize: 22 }}>{icon}</span>
     }
 
@@ -102,6 +120,7 @@ export default function LanguageSelect({ languages, value, onChange, menuStyles 
             options={options}
             value={value}
             onChange={onChange}
+            defaultOpen={defaultOpen}
             menuStyles={menuStyles}
             SelectedItem={SelectedItem}
             MenuItem={MenuItem}
@@ -122,7 +141,7 @@ export function ThemeSelect({ value, onChange, menuStyles }) {
     }))
 
     const SelectedItem = ({ options, value }) => {
-        console.log(options, value)
+        // console.log("ITEM", options, value)
         const { label } = options.find(option => option.value === value)
         return <span style={{ paddingTop: 5 }}>{label}</span>
     }

@@ -6,38 +6,34 @@ import search from "./Search.module.scss"
 import LanguageSelect from "./LanguageSelect"
 import languages from "./languages.json"
 import { setSearchInput, setSearchSourceLang, setSearchTargetLang } from "./actions"
+import LanguagePairSelect from "./LanguagePairSelect"
 
 export default function Search() {
     const { state, dispatch } = useAppContext()
     const { sourceLang, targetLang, value, data } = state.ui.search
 
-    const onChange = e => dispatch(setSearchInput(e.target.value))
+    const pairs = Object.keys(state.languages.localMetadata).map(pair => pair.split("-"))
 
-    const onSwap = () => {
-        dispatch(setSearchSourceLang(targetLang))
-        dispatch(setSearchTargetLang(sourceLang))
+    const onType = e => dispatch(setSearchInput(e.target.value))
+
+    const onChange = (sourceLang, targetLang) => {
+        dispatch(setSearchSourceLang(sourceLang))
+        dispatch(setSearchTargetLang(targetLang))
     }
 
     return (
         <>
             <div className={styles["margin-bottom"]}>
-                <input type="text" autoComplete="off" placeholder="Search the offline corpus" value={value} onChange={onChange} />
+                <input
+                    type="text"
+                    autoComplete="off"
+                    placeholder="Search the offline corpus"
+                    value={value}
+                    onChange={onType}
+                />
             </div>
             <div className={styles["flex-search"]}>
-                <LanguageSelect
-                    languages={languages}
-                    value={sourceLang}
-                    onChange={value => dispatch(setSearchSourceLang(value))}
-                />
-                <button className={`button button-clear ${styles["swap-button"]}`} onClick={onSwap}>
-                    <span className="material-icons">swap_horiz</span>
-                </button>
-                <LanguageSelect
-                    languages={languages}
-                    value={targetLang}
-                    onChange={value => dispatch(setSearchTargetLang(value))}
-                    menuStyles={{ left: -50 }}
-                />
+                <LanguagePairSelect pairs={pairs} source={sourceLang} target={targetLang} onChange={onChange} />
                 <button className="button" onClick={() => {}}>
                     Search
                 </button>
